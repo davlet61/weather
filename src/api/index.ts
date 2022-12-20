@@ -8,9 +8,13 @@ const options = {
   },
 };
 
-export const getWeatherData = async (url: string, query: string): Promise<WeatherData | undefined> => {
+export const getWeatherData = async (
+  url: string,
+  params: { q: string; dt: string },
+): Promise<WeatherData | undefined> => {
   try {
-    const res = await fetch(`${url}?q=${query}`, options);
+    const search = new URLSearchParams(params).toString();
+    const res = await fetch(`${url}?${search}`, options);
     return await res.json();
   } catch (err) {
     console.error(err);

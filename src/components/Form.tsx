@@ -10,8 +10,10 @@ interface FormProps {
 const URL = import.meta.env.VITE_RAPIDAPI_URL;
 
 const Form = ({ fetchData }: FormProps) => {
+  const initialParams = { q: '', dt: '' };
+
   const [recentSearch, setRecentSearch] = useState<Array<string>>([]);
-  const [keyword, setKeyword] = useState('');
+  const [params, setParams] = useState(initialParams);
   const generateRandomKey = () => Math.random().toString(36).slice(2, 7);
 
   useEffect(() => {
@@ -19,42 +21,61 @@ const Form = ({ fetchData }: FormProps) => {
   }, [recentSearch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+    const { value, name } = e.target;
+    setParams({ ...params, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (keyword !== '') {
+    if (params.q !== '') {
       setRecentSearch((previousState) => {
-        const filteredSearch = previousState.filter((el) => el !== keyword);
-        return [keyword, ...filteredSearch].slice(0, 5);
+        const filteredSearch = previousState.filter((el) => el !== params.q);
+        return [params.q, ...filteredSearch].slice(0, 5);
       });
     }
-    getWeatherData(URL, keyword);
-    setKeyword('');
+    const data = await getWeatherData(URL, params);
+    fetchData(data as WeatherData);
+    setParams(initialParams);
   };
 
   return (
-    <form className="flex items-stretch justify-center" onSubmit={handleSubmit}>
-      <label htmlFor="search">
-        Get Data for another city:
-        <input
-          id="search"
-          className="ml-2 rounded rounded-r-none p-2 placeholder:italic"
-          type="text"
-          name="text"
-          placeholder="Type a city name..."
-          list="recent"
-          value={keyword}
-          onChange={handleChange}
-        />
-      </label>
-      <datalist id="recent" className="form__datalist">
-        {recentSearch.map((item) => (
-          <option key={generateRandomKey()}>{item}</option>
-        ))}
-      </datalist>
-      <button type="submit" className="rounded-l-none bg-sky-500 p-2">
+    <form className="flex items-stretch justify-center gap-4 p-8" onSubmit={handleSubmit}>
+      <div className="flex items-end gap-2">
+        <label htmlFor="search">
+          <span>Get data for another city:</span>
+          <input
+            id="search"
+            className="ml-2 rounded p-2 placeholder:italic"
+            type="text"
+            name="q"
+            placeholder="Type a city name..."
+            list="recent"
+            value={params.q}
+            onChange={handleChange}
+          />
+        </label>
+        <datalist id="recent" className="form__datalist">
+          {recentSearch.map((item) => (
+            <option key={generateRandomKey()}>{item}</option>
+          ))}
+        </datalist>
+        <label htmlFor="date">
+          Choose a date
+          <input
+            id="date"
+            className="ml-2 rounded p-2 placeholder:italic"
+            type="date"
+            name="dt"
+            placeholder="Type a city name..."
+            list="recent"
+            value={params.dt}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+
+      <button type="submit" className="flex w-36 items-center justify-center gap-2  rounded bg-sky-500 p-2">
+        <span className="bold text-white">Search</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
