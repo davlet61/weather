@@ -1,7 +1,6 @@
 import { type ChartData, type ChartOptions, Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
-import { generateRandomKey } from '@/api';
 import type { WeatherData } from '@/types';
 
 import { afterDatasetsDraw, afterEvent, afterInit, changeTitle, drawTickImage, weatherIconsToImg } from './helpers';
@@ -85,7 +84,7 @@ const LineChart = ({ weatherData }: LineChartProps) => {
 
   return (
     <div className="h-80 w-full overflow-hidden p-2 md:h-[60vh]">
-      <Chart key={generateRandomKey()} type="line" options={options} data={data} plugins={plugins} />;
+      <Chart key={crypto.randomUUID()} type="line" options={options} data={data} plugins={plugins} />;
     </div>
   );
 };

@@ -33,5 +33,3 @@ export const getIPLocation = async () => {
     return err;
   }
 };
-
-export const generateRandomKey = () => Math.random().toString(36).slice(2, 7);

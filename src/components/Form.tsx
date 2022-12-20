@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { generateRandomKey, getWeatherData } from '@/api';
+import { getWeatherData } from '@/api';
 import { WeatherData } from '@/types';
 
 interface FormProps {
@@ -64,7 +64,7 @@ const Form = ({ handleData }: FormProps) => {
         </label>
         <datalist id="recent" className="form__datalist">
           {recentSearch.map((item) => (
-            <option key={generateRandomKey()}>{item}</option>
+            <option key={crypto.randomUUID()}>{item}</option>
           ))}
         </datalist>
         <label htmlFor="date" className="flex w-full flex-col">
