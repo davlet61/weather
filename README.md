@@ -17,6 +17,7 @@ The application is live at the following address:
 
 https://weather-time-series.vercel.app/
 
+
 ## Run Locally
 
 ### Development
