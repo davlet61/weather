@@ -13,7 +13,7 @@ const Form = ({ fetchData }: FormProps) => {
   const today = new Date().toISOString().split('T')[0];
   const week = 7 * 24 * 60 * 60 * 1000;
 
-  const lessThanWeek = (then: string, now: string) => Date.parse(today) - Date.parse(then) <= week;
+  const lessThanWeek = (now: string, then: string) => Date.parse(now) - Date.parse(then) <= week;
 
   const initialParams = { q: '', dt: today };
   const [recentSearch, setRecentSearch] = useState<Array<string>>([]);
@@ -27,7 +27,7 @@ const Form = ({ fetchData }: FormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    if ((name === 'dt' && value > today) || lessThanWeek(value, today)) {
+    if ((name === 'dt' && value > today) || lessThanWeek(today, value)) {
       setParams({ ...params, [name]: value });
     }
     setErrorMsg('The date cannot be more than 7 days ago');
