@@ -9,14 +9,13 @@ import type { WeatherData } from '@/types';
 const App = () => {
   const [data, setData] = useState<WeatherData>(mockData);
 
-  useEffect(() => {
-    getWeatherData(import.meta.env.VITE_RAPIDAPI_URL, 'Oslo&dt=2022-12-15').then((res) => {
-      setData(res ?? mockData);
-    });
-  }, []);
+  const fetchWeatherData = (data: WeatherData) => {
+    setData(data);
+  };
+
   return (
     <main>
-      <Form />
+      <Form fetchData={fetchWeatherData} />
       <LineChart weatherData={data} />;
     </main>
   );

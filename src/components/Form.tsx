@@ -1,11 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const Form = () => {
+import { getWeatherData } from '@/api';
+import { WeatherData } from '@/types';
+
+interface FormProps {
+  fetchData: (data: WeatherData) => void;
+}
+
+const URL = import.meta.env.VITE_RAPIDAPI_URL;
+
+const Form = ({ fetchData }: FormProps) => {
   const [recentSearch, setRecentSearch] = useState<Array<string>>([]);
+  const [keyword, setKeyword] = useState('');
   const generateRandomKey = () => Math.random().toString(36).slice(2, 7);
 
+  useEffect(() => {
+    localStorage.setItem('recent.search', JSON.stringify([...recentSearch]));
+  }, [recentSearch]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (keyword !== '') {
+      setRecentSearch((previousState) => {
+        const filteredSearch = previousState.filter((el) => el !== keyword);
+        return [keyword, ...filteredSearch].slice(0, 5);
+      });
+    }
+    getWeatherData(URL, keyword);
+    setKeyword('');
+  };
+
   return (
-    <form className="flex items-stretch justify-center">
+    <form className="flex items-stretch justify-center" onSubmit={handleSubmit}>
       <label htmlFor="search">
         Get Data for another city:
         <input
@@ -15,6 +45,8 @@ const Form = () => {
           name="text"
           placeholder="Type a city name..."
           list="recent"
+          value={keyword}
+          onChange={handleChange}
         />
       </label>
       <datalist id="recent" className="form__datalist">
