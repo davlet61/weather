@@ -14,7 +14,7 @@ const App = () => {
 
   return (
     <main>
-      <Form fetchData={handleWeatherData} />
+      <Form handleData={handleWeatherData} />
       <LineChart weatherData={data} />;
     </main>
   );
