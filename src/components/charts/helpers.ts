@@ -1,15 +1,6 @@
-import type { Day, Hour } from '@api';
-import type { Chart, ChartTypeRegistry, TooltipItem } from 'chart.js';
+import type { ChartType, ChartWithCorsair, Day, Hour, TooltipItems } from '@/types';
 
-export interface ChartWithCorsair extends Chart {
-  corsair: {
-    x: number;
-    y: number;
-    draw?: boolean;
-  };
-}
-
-export const changeTitle = (items: TooltipItem<keyof ChartTypeRegistry>[], day: Day) => {
+export const changeTitle = (items: TooltipItems, day: Day) => {
   let label = items[0].label;
   if (items[0].raw === day.mintemp_c) {
     label += ' => Lowest Temperature';
@@ -29,7 +20,7 @@ export const weatherIconsToImg = (srcs: Array<Hour>) =>
       return image;
     });
 
-export const drawTickImage = (chart: Chart, images: Array<HTMLImageElement>) => {
+export const drawTickImage = (chart: ChartType, images: Array<HTMLImageElement>) => {
   const ctx = chart.ctx;
   const xAxis = chart.scales.x2;
   const yAxis = chart.scales.y;

@@ -1,11 +1,10 @@
-import 'tailwindcss/tailwind.css';
-
 import mockData from '@data/weather-data.json';
 import { useEffect, useState } from 'react';
 
-import { type WeatherData, getWeatherData } from '@/api';
-
-import LineChart from './components/charts/LineChart';
+import { getWeatherData } from '@/api';
+import LineChart from '@/components/charts/LineChart';
+import Form from '@/components/Form';
+import type { WeatherData } from '@/types';
 
 const App = () => {
   const [data, setData] = useState<WeatherData>(mockData);
@@ -17,6 +16,7 @@ const App = () => {
   }, []);
   return (
     <main>
+      <Form />
       <LineChart weatherData={data} />;
     </main>
   );

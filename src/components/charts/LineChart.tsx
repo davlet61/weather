@@ -1,7 +1,7 @@
 import { type ChartData, type ChartOptions, Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
-import type { WeatherData } from '@/api';
+import type { WeatherData } from '@/types';
 
 import { afterDatasetsDraw, afterEvent, afterInit, changeTitle, drawTickImage, weatherIconsToImg } from './helpers';
 
