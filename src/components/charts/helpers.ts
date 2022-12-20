@@ -90,7 +90,7 @@ export const afterDatasetsDraw = (
 
   ctx.lineWidth = opts.width || 0;
   ctx.setLineDash(opts.dash || []);
-  ctx.strokeStyle = opts.color || 'black';
+  ctx.strokeStyle = opts.color || 'red';
 
   ctx.save();
   ctx.beginPath();

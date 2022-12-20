@@ -16,9 +16,9 @@ const App = () => {
     });
   }, []);
   return (
-    <div className="flex h-full w-screen items-center justify-center">
+    <main>
       <LineChart weatherData={data} />;
-    </div>
+    </main>
   );
 };
 

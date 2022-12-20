@@ -17,11 +17,11 @@ const LineChart = ({ weatherData }: LineChartProps) => {
   const images = weatherIconsToImg(hour);
 
   const ptBgColor = hour.map((h) =>
-    h.temp_c === day.maxtemp_c || h.temp_c === day.mintemp_c ? 'rgba(255, 99, 132, 0.3)' : 'rgb(53, 162, 235)',
+    h.temp_c === day.maxtemp_c || h.temp_c === day.mintemp_c ? 'rgb(255, 99, 132)' : 'rgba(53, 162, 235, 0.3)',
   );
 
   const ptBorderColor = hour.map((h) =>
-    h.temp_c === day.maxtemp_c || h.temp_c === day.mintemp_c ? 'rgb(255, 99, 132)' : 'rgb(53, 162, 235)',
+    h.temp_c === day.maxtemp_c || h.temp_c === day.mintemp_c ? 'rgb(255, 99, 132)' : 'rgba(53, 162, 235)',
   );
 
   const plugins = [
@@ -85,7 +85,11 @@ const LineChart = ({ weatherData }: LineChartProps) => {
     ],
   };
 
-  return <Chart type="line" options={options} data={data} plugins={plugins} />;
+  return (
+    <div className="w-screen p-4">
+      <Chart type="line" options={options} data={data} plugins={plugins} />;
+    </div>
+  );
 };
 
 export default LineChart;
