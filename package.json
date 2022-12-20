@@ -3,7 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://github.com/davlet61/arimine#readme",
+  "license": "isc",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -11,16 +14,17 @@
     "lint:format": "prettier  --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
     "lint": "pnpm lint:format && pnpm lint:fix ",
     "type-check": "tsc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "pnpm playwright test"
   },
   "dependencies": {
-    "@faker-js/faker": "^7.6.0",
     "chart.js": "^4.1.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.1.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.29.0",
     "@types/node": "^18.11.17",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",

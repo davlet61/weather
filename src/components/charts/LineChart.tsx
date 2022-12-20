@@ -1,6 +1,7 @@
 import { type ChartData, type ChartOptions, Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
+import { generateRandomKey } from '@/api';
 import type { WeatherData } from '@/types';
 
 import { afterDatasetsDraw, afterEvent, afterInit, changeTitle, drawTickImage, weatherIconsToImg } from './helpers';
@@ -34,6 +35,10 @@ const LineChart = ({ weatherData }: LineChartProps) => {
 
   const options: ChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: 30,
+    },
     elements: {
       point: {
         radius: 4,
@@ -41,11 +46,6 @@ const LineChart = ({ weatherData }: LineChartProps) => {
       },
     },
     scales: {
-      y: {
-        suggestedMin: -25,
-        suggestedMax: 5,
-      },
-
       x2: {
         ticks: {
           callback: () => '',
@@ -56,11 +56,10 @@ const LineChart = ({ weatherData }: LineChartProps) => {
 
     plugins: {
       legend: {
-        position: 'top' as const,
+        display: false,
       },
       title: {
-        display: true,
-        text: 'Temperature',
+        display: false,
       },
       tooltip: {
         callbacks: {
@@ -76,7 +75,6 @@ const LineChart = ({ weatherData }: LineChartProps) => {
     labels,
     datasets: [
       {
-        label: weatherData.location.name,
         data: hour.map((h) => h.temp_c),
         fill: 'start',
         pointBackgroundColor: ptBgColor,
@@ -86,8 +84,8 @@ const LineChart = ({ weatherData }: LineChartProps) => {
   };
 
   return (
-    <div className="w-screen p-4">
-      <Chart type="line" options={options} data={data} plugins={plugins} />;
+    <div className="h-80 w-full overflow-hidden p-2 md:h-[60vh]">
+      <Chart key={generateRandomKey()} type="line" options={options} data={data} plugins={plugins} />;
     </div>
   );
 };

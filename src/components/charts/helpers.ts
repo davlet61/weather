@@ -26,7 +26,7 @@ export const drawTickImage = (chart: ChartType, images: Array<HTMLImageElement>)
   const yAxis = chart.scales.y;
   xAxis.ticks.map((_, i) => {
     const x = xAxis.getPixelForTick(i);
-    ctx.drawImage(images[i], x - 12, yAxis.top - 35, 40, 40);
+    ctx.drawImage(images[i], x - 12, yAxis.top - 50, 35, 35);
   });
   ctx.restore();
 };

@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { getWeatherData } from '@/api';
+import { generateRandomKey, getWeatherData } from '@/api';
 import { WeatherData } from '@/types';
 
 interface FormProps {
   handleData: (data: WeatherData) => void;
 }
-
-const URL = import.meta.env.VITE_RAPIDAPI_URL;
 
 const Form = ({ handleData }: FormProps) => {
   const today = new Date().toISOString().split('T')[0];
@@ -15,11 +13,10 @@ const Form = ({ handleData }: FormProps) => {
 
   const lessThanWeek = (now: string, then: string) => Date.parse(now) - Date.parse(then) <= week;
 
-  const initialParams = { q: '', dt: today };
+  const initialParams = { q: '', dt: '' };
   const [recentSearch, setRecentSearch] = useState<Array<string>>([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [params, setParams] = useState(initialParams);
-  const generateRandomKey = () => Math.random().toString(36).slice(2, 7);
 
   useEffect(() => {
     localStorage.setItem('recent.search', JSON.stringify([...recentSearch]));
@@ -27,10 +24,13 @@ const Form = ({ handleData }: FormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    if ((name === 'dt' && value > today) || lessThanWeek(today, value)) {
+    if (name === 'dt' && (Date.parse(value) > Date.parse(today) || !lessThanWeek(today, value))) {
+      setParams({ ...params, dt: value });
+      setErrorMsg('Date cannot be more than 7 days ago or in future');
+    } else {
+      setErrorMsg('');
       setParams({ ...params, [name]: value });
     }
-    setErrorMsg('The date cannot be more than 7 days ago');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,9 +41,8 @@ const Form = ({ handleData }: FormProps) => {
         return [params.q, ...filteredSearch].slice(0, 5);
       });
     }
-    const data = await getWeatherData(URL, params);
-    console.log('🚀 ~ file: Form.tsx:37 ~ handleSubmit ~ data', data);
-    handleData(data as WeatherData);
+    const data = await getWeatherData(params);
+    handleData(data ?? ({} as WeatherData));
     setParams(initialParams);
   };
 

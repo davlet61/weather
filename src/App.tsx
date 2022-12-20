@@ -1,22 +1,23 @@
-import mockData from '@data/weather-data.json';
 import { useState } from 'react';
 
-import LineChart from '@/components/charts/LineChart';
-import Form from '@/components/Form';
-import type { WeatherData } from '@/types';
+import IpBasedPage from './components/IpBasedPage';
+import MockDataPage from './components/MockDataPage';
+import PageSwitch from './components/PageSwitch';
 
 const App = () => {
-  const [data, setData] = useState<WeatherData>(mockData);
+  const [isIpBased, setIsIpBased] = useState(false);
 
-  const handleWeatherData = (data: WeatherData) => {
-    setData(data);
+  const handleSwitch = () => {
+    setIsIpBased((prev) => !prev);
   };
 
   return (
-    <main>
-      <Form handleData={handleWeatherData} />
-      <LineChart weatherData={data} />;
-    </main>
+    <>
+      <header>
+        <PageSwitch isChecked={isIpBased} handleSwitch={handleSwitch} />
+      </header>
+      {isIpBased ? <IpBasedPage /> : <MockDataPage />}
+    </>
   );
 };
 
