@@ -4,12 +4,12 @@ import { getWeatherData } from '@/api';
 import { WeatherData } from '@/types';
 
 interface FormProps {
-  fetchData: (data: WeatherData) => void;
+  handleData: (data: WeatherData) => void;
 }
 
 const URL = import.meta.env.VITE_RAPIDAPI_URL;
 
-const Form = ({ fetchData }: FormProps) => {
+const Form = ({ handleData }: FormProps) => {
   const today = new Date().toISOString().split('T')[0];
   const week = 7 * 24 * 60 * 60 * 1000;
 
@@ -43,7 +43,7 @@ const Form = ({ fetchData }: FormProps) => {
     }
     const data = await getWeatherData(URL, params);
     console.log('🚀 ~ file: Form.tsx:37 ~ handleSubmit ~ data', data);
-    fetchData(data as WeatherData);
+    handleData(data as WeatherData);
     setParams(initialParams);
   };
 
